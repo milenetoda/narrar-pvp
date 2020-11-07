@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'tex_gyre_adventorbold';
+    src: url('texgyreadventor-bold-webfont.eot');
+    src: url('texgyreadventor-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         /* url('texgyreadventor-bold-webfont.woff2') format('woff2'), */
+         url('texgyreadventor-bold-webfont.woff') format('woff'),
+         url('texgyreadventor-bold-webfont.ttf') format('truetype'),
+         url('texgyreadventor-bold-webfont.svg#tex_gyre_adventorbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+

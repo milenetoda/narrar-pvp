@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PVP Video</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>PVP Video</h1>
+
+    <div id="app">
+      <div
+        class="notification"
+        :class="notification.type"
+        v-if="notification.text"
+      >
+        {{ notification.text }}
+      </div>
+
+      <div class="container">
+        <form onsubmit="return false" class="d-flex">
+          <input id="url-input" v-model="url" type="text" class="w-100" />
+          <button @click="scrape">Gerar</button>
+        </form>
+      </div>
+
+      <div
+        class="container player-list"
+        :class="{ hidden: !participants.length }"
+      >
+        <div
+          class="player"
+          v-for="player in participants"
+          :key="player.username"
+          :class="{ selected: player.selected }"
+          @click="toggleplayer(player)"
+        >
+          <div class="player-avatar">
+            <div class="circle">
+              <img :src="player.avatar" />
+            </div>
+          </div>
+          <div class="player-name">{{ player.username }}</div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div
+          class="participant"
+          v-for="participant in participants"
+          :key="participant.username"
+          :class="participantClasses(participant)"
+        >
+          <div class="participant-header">
+            <div class="participant-avatar">
+              <div class="circle">
+                <img :src="participant.avatar" />
+              </div>
+            </div>
+
+            <div class="participant-data w-100">
+              <div class="participant-username">{{ participant.username }}</div>
+              <div class="participant-tier">
+                <div class="participant-tier-bar"></div>
+                <div
+                  class="participant-tier-level"
+                  :style="{ width: participant.tier.level }"
+                ></div>
+                <div class="participant-tier-name">
+                  {{ participant.tier.name }}
+                </div>
+              </div>
+            </div>
+
+            <div class="participant-team">
+              <img :src="participant.team" />
+            </div>
+          </div>
+
+          <div class="pokemon-list">
+            <div
+              class="pokemon"
+              v-for="pokemon in participant.pokemon"
+              :key="pokemon.name"
+              :class="{hidden: !pokemon.selected}"
+              @click="togglepokemon(pokemon)"
+            >
+              <div class="pokemon-avatar">
+                <img :src="pokemon.avatar" />
+              </div>
+              <div class="pokemon-cp">{{ pokemon.cp }}</div>
+              <div class="pokemon-name">{{ pokemon.name }}</div>
+              <div :class="{ 'pokemon-is-shadow': pokemon.shadow }"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="vue.js"></script>
+
+    <script>
+      const app = new Vue({
+        el: "#app",
+        data: {
+          url: "",
+          notification: {
+            text: "",
+            type: "",
+          },
+          participants: [],
+        },
+        created() {
+          this.url = window.localStorage.getItem("url") || "";
+
+          window.addEventListener("error", function (message) {
+            this.notifyError(message);
+          });
+
+          this.notifyInfo(
+            "Digite a URL do torneio (ex: https://silph.gg/t/e93e/results)"
+          );
+        },
+        mounted() {
+          document.getElementById("url-input").focus();
+        },
+        watch: {
+          url(value) {
+            window.localStorage.setItem("url", value);
+          },
+        },
+        methods: {
+          async scrape() {
+            try {
+              this.notifyInfo("Gerando...");
+              const response = await fetch("/scrape?url=" + this.url);
+              const data = await response.json();
+              for (const participant of data) {
+                participant.selected = false;
+                for (const pokemon of participant.pokemon){
+                  pokemon.selected = true;  
+                }
+              }
+              this.participants = data;
+              this.notifySuccess("Gerado");
+            } catch (e) {
+              this.notifyError(e);
+            }
+          },
+
+          notifyInfo(text) {
+            this.notification.text = text;
+            this.notification.type = "notification-info";
+          },
+
+          notifySuccess(text) {
+            this.notification.text = text;
+            this.notification.type = "notification-success";
+          },
+
+          notifyWarning(text) {
+            this.notification.text = text;
+            this.notification.type = "notification-warning";
+          },
+
+          notifyError(text) {
+            console.log(text);
+            this.notification.text = text;
+            this.notification.type = "notification-error";
+          },
+
+          toggleplayer(player) {
+            player.selected = !player.selected;
+
+            for (const pokemon of player.pokemon){
+              pokemon.selected = true;
+            }
+          },
+
+          togglepokemon(pokemon){
+            pokemon.selected = !pokemon.selected;
+          },
+
+          participantClasses(participant) {
+            const classes = {
+              hidden: !participant.selected,
+            };
+            classes[participant.tier.name.toLowerCase()] = true;
+            return classes;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

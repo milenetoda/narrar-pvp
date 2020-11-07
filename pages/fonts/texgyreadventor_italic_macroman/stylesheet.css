@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'tex_gyre_adventoritalic';
+    src: url('texgyreadventor-italic-webfont.eot');
+    src: url('texgyreadventor-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         /* url('texgyreadventor-italic-webfont.woff2') format('woff2'), */
+         url('texgyreadventor-italic-webfont.woff') format('woff'),
+         url('texgyreadventor-italic-webfont.ttf') format('truetype'),
+         url('texgyreadventor-italic-webfont.svg#tex_gyre_adventoritalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
