@@ -17,6 +17,10 @@
         {{ notification.text }}
       </div>
 
+      <div>
+        <button @click="save">Salvar</button>
+      </div>
+
       <div class="container">
         <form onsubmit="return false" class="d-flex">
           <input id="url-input" v-model="url" type="text" class="w-100" />
@@ -90,7 +94,9 @@
               </div>
               <div class="pokemon-cp">{{ pokemon.cp }}</div>
               <div class="pokemon-name">{{ pokemon.name }}</div>
-              <div :class="{ 'pokemon-is-shadow': pokemon.shadow }"></div>
+              <div :class="{ 'pokemon-is-shadow': pokemon.shadow }">
+                <img v-if="pokemon.shadow" src="/shadow.png">
+              </div>
             </div>
           </div>
         </div>
@@ -98,6 +104,8 @@
     </div>
 
     <script src="vue.js"></script>
+    <script src="FileSaver.min.js"></script>
+    <script src="html2canvas.min.js"></script>
 
     <script>
       const app = new Vue({
@@ -137,14 +145,31 @@
               const data = await response.json();
               for (const participant of data) {
                 participant.selected = false;
-                for (const pokemon of participant.pokemon){
-                  pokemon.selected = true;  
+                for (const pokemon of participant.pokemon) {
+                  pokemon.selected = true;
                 }
               }
               this.participants = data;
               this.notifySuccess("Gerado");
             } catch (e) {
               this.notifyError(e);
+            }
+          },
+
+          save() {
+            var selecionados = document.querySelectorAll(
+              ".participant:not(.hidden)"
+            );
+            
+            for (const participante of selecionados) {
+              html2canvas(participante, {
+                backgroundColor: null,
+                allowTaint: true,
+              }).then((canvas) => {
+                canvas.toBlob((blob) => {
+                  saveAs(blob, "jogador.png");
+                });
+              });
             }
           },
 
@@ -172,12 +197,12 @@
           toggleplayer(player) {
             player.selected = !player.selected;
 
-            for (const pokemon of player.pokemon){
+            for (const pokemon of player.pokemon) {
               pokemon.selected = true;
             }
           },
 
-          togglepokemon(pokemon){
+          togglepokemon(pokemon) {
             pokemon.selected = !pokemon.selected;
           },
 

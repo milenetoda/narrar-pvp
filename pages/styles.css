@@ -56,8 +56,10 @@ button:hover {
 }
 
 .container {
-  background-color: #505050;
+  --background-color: #e6e6e6;
+  background-color: #505050
   margin-bottom: 1rem;
+
 }
 
 .circle {
@@ -111,7 +113,7 @@ button:hover {
 }
 
 .participant {
-  padding: 1rem 0 10rem;
+  padding: 1rem 0 1rem;
 }
 
 .participant:hover {
@@ -149,6 +151,10 @@ button:hover {
   background-color: #76668b;
 }
 
+.participant.unranked .participant-avatar .circle {
+  background-color: #76668b;
+}
+
 .participant .participant-data {
   padding: 0 1rem;
 }
@@ -164,6 +170,10 @@ button:hover {
 }
 
 .participant.challenger .participant-username {
+  color: rgb(194, 157, 246);
+}
+
+.participant.unranked .participant-username {
   color: rgb(194, 157, 246);
 }
 
@@ -196,6 +206,10 @@ button:hover {
   background-color: #5f5967;
 }
 
+.participant.unranked .participant-tier-bar {
+  background-color: #5f5967;
+}
+
 .participant.trainer .participant-tier-bar {
   background-color: #5c5c5c;
 }
@@ -205,6 +219,10 @@ button:hover {
 }
 
 .participant.challenger .participant-tier-level {
+  background-color: #76668b;
+}
+
+.participant.unranked .participant-tier-level {
   background-color: #76668b;
 }
 
@@ -221,8 +239,7 @@ button:hover {
 }
 
 .participant .participant-team {
-  filter: sepia(0.8) brightness(1.2);
-  opacity: 0.3;
+  opacity: 0.7;
 }
 
 .pokemon-list {
@@ -260,6 +277,7 @@ button:hover {
 
 .pokemon .pokemon-name {
   background-color: #6d6d6d;
+  padding-bottom: 4px;
 }
 
 .pokemon .pokemon-is-shadow {
@@ -268,7 +286,8 @@ button:hover {
   position: absolute;
   top: 16px;
   right: 2px;
-  background: url(/shadow.png) no-repeat 50% 50%;
+  text-align: center;
+  /* background: url(/shadow.png) no-repeat 50% 50%; */
   background-color: rgba(0, 0, 0, 0);
   background-size: auto;
   background-size: contain;
@@ -277,4 +296,8 @@ button:hover {
   border-radius: 100%;
   border: 1px solid #cb9aef;
   box-shadow: 0 0 6px 2px #434343;
+}
+
+.pokemon .pokemon-is-shadow img {
+  height: 32px;
 }

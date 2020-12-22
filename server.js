@@ -15,6 +15,23 @@ const init = async () => {
     handler: () => "",
   });
 
+  await server.register(require("@hapi/h2o2"));
+  server.route({
+    method: "GET",
+    path: "/proxy/{path*}",
+    handler: {
+      proxy: {
+        mapUri: function (request) {
+          return {
+            uri: "https://assets.thesilphroad.com/" + request.params.path,
+          };
+        },
+        passThrough: true,
+        xforward: true,
+      },
+    },
+  });
+
   await server.register(require("@hapi/inert"));
   server.route({
     method: "GET",

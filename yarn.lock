@@ -89,6 +89,16 @@
   resolved "https://registry.yarnpkg.com/@hapi/file/-/file-2.0.0.tgz#2ecda37d1ae9d3078a67c13b7da86e8c3237dfb9"
   integrity sha512-WSrlgpvEqgPWkI18kkGELEZfXr0bYLtr16iIN4Krh9sRnzBZN6nnWxHFxtsnP684wueEySBbXPDg/WfA9xJdBQ==
 
+"@hapi/h2o2@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@hapi/h2o2/-/h2o2-9.0.2.tgz#e9f1dfe789257c80d6ee37ec9fe358f8c69f855a"
+  integrity sha512-V7RsmVyl7uyWeuEko4uaSZbFpBHKcSFSui6PXNRaRLJHFX+iPbqWmeH6m1pW/WJ8DuaCVJFKhluDCDI9l4+1cw==
+  dependencies:
+    "@hapi/boom" "9.x.x"
+    "@hapi/hoek" "9.x.x"
+    "@hapi/validate" "1.x.x"
+    "@hapi/wreck" "17.x.x"
+
 "@hapi/hapi@^20.0.1":
   version "20.0.1"
   resolved "https://registry.yarnpkg.com/@hapi/hapi/-/hapi-20.0.1.tgz#005dd0414182090b4f60851207e38ac389cf844e"

@@ -31,6 +31,16 @@ var x = Xray({
 
       return value.slice(startIdx + startStr.length, endIdx).trim();
     },
+    fixUrl: function (value) {
+      if (typeof value !== "string") {
+        return value;
+      }
+      var x = value
+        .replace("https://thesilphroad.com/", "/proxy/")
+        .replace("https://assets.thesilphroad.com/", "/proxy/");
+
+      return x;
+    },
   },
 });
 
@@ -42,11 +52,11 @@ module.exports = {
       path: "/scrape",
       handler: function (request, h) {
         const url = request.query.url;
-        
+
         return x(url, "#checkedIn tr[data-participant]", [
           {
-            team: ".teamLogo@src",
-            avatar: ".avatarWrap img@src",
+            team: ".teamLogo@src| fixUrl",
+            avatar: ".avatarWrap img@src| fixUrl",
             username: ".competitorUsername | trim",
             tier: {
               name:
@@ -56,7 +66,7 @@ module.exports = {
             },
             pokemon: x(".pokemonEntry", [
               {
-                avatar: "img@src",
+                avatar: "img@src| fixUrl",
                 cp: "p.cp",
                 name: "p:not(.cp)",
                 shadow: "@class | isShadow",
